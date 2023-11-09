@@ -36,7 +36,7 @@ jobs:
           run: make test TESTS=--show-diff
 
       - name: Package and copy
-        if: ${{ matrix.os === 'debian' }}
+        if: ${{ matrix.os == 'debian' }}
         run: |
           mkdir binaries
           pear package-validate
