@@ -53,8 +53,8 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: opentelemetry-${{github.ref_name}}.tar.gz
-          path: binaries/opentelemetry-${{github.ref_name}}.tar.gz
+          name: opentelemetry-${{github.ref_name}}.tgz
+          path: binaries/opentelemetry-${{github.ref_name}}.tgz
 
   windows:
     runs-on: windows-2019
