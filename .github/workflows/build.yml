@@ -110,7 +110,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - run: |
+      - name: mkdir
+        run: |
+          mkdir binaries
+      - name: download-artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: binaries
+      - name: find
+        run: |
           pwd
           find . -name "*.dll"
           find . -name "*.tgz"
