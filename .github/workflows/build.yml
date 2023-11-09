@@ -5,6 +5,7 @@ on:
     tags:
       - '*'
     branches:
+      - 'win-artifacts'
   pull_request:
     branches: [ main ]
 
