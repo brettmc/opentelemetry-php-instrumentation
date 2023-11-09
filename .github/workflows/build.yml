@@ -49,12 +49,13 @@ jobs:
           pear package-validate
           pear package
           cp opentelemetry-*.tgz binaries/
+          ls -l binaries/
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: opentelemetry-${{github.ref_name}}.tgz
-          path: binaries/opentelemetry-*.tgz
+          path: binaries/*.tgz
 
   windows:
     runs-on: windows-2019
