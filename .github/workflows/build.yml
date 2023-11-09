@@ -41,7 +41,7 @@ jobs:
       image: php:8.2-cli
 
     steps:
-      - uses: action/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Package and copy
         run: |
@@ -49,6 +49,12 @@ jobs:
           pear package-validate
           pear package
           cp opentelemetry-*.tar.gz binaries/
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: opentelemetry-${{github.ref_name}}.tar.gz
+          path: binaries/opentelemetry-${{github.ref_name}}.tar.gz
 
   windows:
     runs-on: windows-2019
