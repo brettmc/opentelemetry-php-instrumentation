@@ -48,7 +48,7 @@ jobs:
           mkdir binaries
           pear package-validate
           pear package
-          cp opentelemetry-*.tar.gz binaries/
+          cp opentelemetry-*.tgz binaries/
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
