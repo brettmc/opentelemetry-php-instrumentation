@@ -10,7 +10,7 @@ defaults:
     working-directory: ext
 
 jobs:
-  php:
+  linux:
     runs-on: ubuntu-latest
     name: linux
     strategy:
@@ -36,11 +36,12 @@ jobs:
           run: make test TESTS=--show-diff
 
       - name: Package and copy
-        if: ${{ matrix.os == 'debian' }}
+        if: ${{ matrix.os == 'debian' && matrix.php == '8.2' }} #only build once, "pear package" just gzips the source
         run: |
           mkdir binaries
-          pear package-validate
-          pear package
+          # pear package-validate
+          # pear package
+          touch opentelemetry-9.9.9.tar.gz #testing until pear is available
           cp opentelemetry-*.tar.gz binaries/
   windows:
     runs-on: windows-2019
