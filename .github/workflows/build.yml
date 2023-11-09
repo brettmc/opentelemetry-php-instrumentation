@@ -35,14 +35,21 @@ jobs:
             TEST_PHP_ARGS: "-q" #do not try to submit failures
           run: make test TESTS=--show-diff
 
+  linux-package:
+    runs-on: ubuntu-latest
+    container:
+      image: php:8.2-cli
+
+    steps:
+      - uses: action/checkout@v3
+
       - name: Package and copy
-        if: ${{ matrix.os == 'debian' && matrix.php == '8.2' }} #only build once, "pear package" just gzips the source
         run: |
           mkdir binaries
-          # pear package-validate
-          # pear package
-          touch opentelemetry-9.9.9.tar.gz #testing until pear is available
+          pear package-validate
+          pear package
           cp opentelemetry-*.tar.gz binaries/
+
   windows:
     runs-on: windows-2019
     continue-on-error: false
@@ -75,9 +82,12 @@ jobs:
           TEST_PHP_ARGS: "-q"
         run: nmake test TESTS=--show-diff
       - name: Copy binaries
+        env:
+          BUILD_NAME="opentelemetry-${{matrix.php}}-${{steps.setup-php-sdk.outputs.vs}}-x64-nts}}"
         run: |
           md binaries
-          copy ext\x64\Release\php_opentelemetry.dll binaries/opentelemetry-${{matrix.php}}-${{steps.setup-php-sdk.outputs.vs}}-x64-nts\php_opentelemetry.dll
+          mkdir binaries\$BUILD_NAME
+          copy ext\x64\Release\php_opentelemetry.dll binaries\$BUILD_NAME\php_opentelemetry.dll
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
