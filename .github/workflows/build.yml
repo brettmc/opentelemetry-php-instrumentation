@@ -100,7 +100,7 @@ jobs:
           BUILD_NAME: "opentelemetry-${{matrix.php}}-${{steps.setup-php-sdk.outputs.vs}}-x64-nts}}"
         run: |
           md binaries
-          mkdir binaries\$BUILD_NAME
+          md binaries\$BUILD_NAME
           copy ext\x64\Release\php_opentelemetry.dll binaries\$BUILD_NAME\php_opentelemetry.dll
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
