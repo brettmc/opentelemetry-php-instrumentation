@@ -34,6 +34,14 @@ jobs:
           env:
             TEST_PHP_ARGS: "-q" #do not try to submit failures
           run: make test TESTS=--show-diff
+
+      - name: Package and copy
+        if: ${{ matrix.os === 'debian' }}
+        run: |
+          mkdir binaries
+          pear package-validate
+          pear package
+          cp opentelemetry-*.tar.gz binaries/
   windows:
     runs-on: windows-2019
     continue-on-error: false
@@ -65,6 +73,10 @@ jobs:
         env:
           TEST_PHP_ARGS: "-q"
         run: nmake test TESTS=--show-diff
+      - name: Copy binaries
+        run: |
+          md binaries
+          copy ext\x64\Release\php_opentelemetry.dll binaries/opentelemetry-${{matrix.php}}-${{steps.setup-php-sdk.outputs.vs}}-x64-nts\php_opentelemetry.dll
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
