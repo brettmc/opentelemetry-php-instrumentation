@@ -61,7 +61,8 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: opentelemetry-${{github.ref_name}}.tgz
-          path: binaries/*.tgz
+          path: ext/binaries/*.tgz
+          if-no-files-found: error
 
   windows:
     runs-on: windows-2019
@@ -96,7 +97,7 @@ jobs:
         run: nmake test TESTS=--show-diff
       - name: Copy binaries
         env:
-          BUILD_NAME="opentelemetry-${{matrix.php}}-${{steps.setup-php-sdk.outputs.vs}}-x64-nts}}"
+          BUILD_NAME: "opentelemetry-${{matrix.php}}-${{steps.setup-php-sdk.outputs.vs}}-x64-nts}}"
         run: |
           md binaries
           mkdir binaries\$BUILD_NAME
