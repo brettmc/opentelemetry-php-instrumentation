@@ -116,7 +116,7 @@ jobs:
       - name: download-artifacts
         uses: actions/download-artifact@v3
         with:
-          path: binaries
+          path: ext/binaries
       - name: find
         run: |
           pwd
@@ -135,4 +135,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
-          files: binaries/*
+          files: ext/binaries/*
