@@ -53,6 +53,10 @@ jobs:
           echo ${{ github.workspace }}
           ls -l binaries/
 
+      - name: Find
+        run: |
+          find . -name "*.tgz" -print
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
