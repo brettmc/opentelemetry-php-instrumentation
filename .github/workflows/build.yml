@@ -104,10 +104,12 @@ jobs:
           path: ext\x64\Release\php_opentelemetry.dll
           if-no-files-found: error
 
-  test:
+  find-binaries:
     runs-on: ubuntu-latest
     needs: [linux, pecl-package, windows]
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - run: |
           pwd
           find . -name "*.dll"
