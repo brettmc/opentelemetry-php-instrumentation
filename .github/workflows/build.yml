@@ -106,6 +106,7 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
     needs: [linux, pecl-package, windows]
     continue-on-error: false
     steps:
@@ -113,7 +114,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           generate_release_notes: true
           files: binaries/**/*
