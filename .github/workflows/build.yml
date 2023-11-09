@@ -49,6 +49,8 @@ jobs:
           pear package-validate
           pear package
           cp opentelemetry-*.tgz binaries/
+          pwd
+          echo ${{ github.workspace }}
           ls -l binaries/
 
       - name: Upload artifacts
