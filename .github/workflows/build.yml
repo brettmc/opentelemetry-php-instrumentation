@@ -68,7 +68,7 @@ jobs:
       - name: Package
         run: |
           mkdir binaries
-          Get-ChildItem -Recurse -Filter "opentelemetry.dll" | ForEach-Object {Copy-Item -Path $_.FullName -Destination "binaries"}
+          Get-ChildItem -Recurse -Filter "php_opentelemetry.dll" | ForEach-Object {Copy-Item -Path $_.FullName -Destination "binaries"}
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
