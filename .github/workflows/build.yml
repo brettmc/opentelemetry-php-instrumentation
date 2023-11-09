@@ -65,12 +65,8 @@ jobs:
         env:
           TEST_PHP_ARGS: "-q"
         run: nmake test TESTS=--show-diff
-      - name: Package
-        run: |
-          mkdir binaries
-          Get-ChildItem -Recurse -Filter "php_opentelemetry.dll" | ForEach-Object {Copy-Item -Path $_.FullName -Destination "binaries"}
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: opentelemetry-${{matrix.php}}-${{steps.setup-php-sdk.outputs.vs}}-x64-nts
-          path: binaries
+          path: ext\x64\Release\php_opentelemetry.dll
