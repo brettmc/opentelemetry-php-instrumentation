@@ -2,10 +2,6 @@ name: Build, test, release
 
 on:
   push:
-    tags:
-      - '*'
-    branches:
-      - '*'
   pull_request:
     branches: [ main ]
 
@@ -93,7 +89,7 @@ jobs:
         run: nmake test TESTS=--show-diff
       - name: Copy binaries
         env:
-          BUILD_NAME: "opentelemetry-${{matrix.php}}-${{steps.setup-php-sdk.outputs.vs}}-x64-nts}}"
+          BUILD_NAME: "opentelemetry-${{matrix.php}}-windows-x64-nts}}"
         run: |
           md binaries\$BUILD_NAME
           copy x64\Release\php_opentelemetry.dll binaries\$BUILD_NAME\php_opentelemetry.dll
@@ -104,26 +100,7 @@ jobs:
           path: ext\x64\Release\php_opentelemetry.dll
           if-no-files-found: error
 
-  find-binaries:
-    runs-on: ubuntu-latest
-    needs: [linux, pecl-package, windows]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: mkdir
-        run: |
-          mkdir binaries
-      - name: download-artifacts
-        uses: actions/download-artifact@v3
-        with:
-          path: ext/binaries
-      - name: find
-        run: |
-          pwd
-          find . -name "*.dll"
-          find . -name "*.tgz"
-
-  release:
+  release-if-tag:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     needs: [linux, pecl-package, windows]
@@ -137,15 +114,11 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           path: ext/binaries
-      - name: debug
-        run: |
-          pwd
-          find . -name "*.dll"
-          find . -name "*.tgz"
       - name: zip
         run: find ./binaries/* -maxdepth 1 -type d -exec zip -jr {}.zip {} \;
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
+          draft: true
           files: "**/binaries/*.zip"
