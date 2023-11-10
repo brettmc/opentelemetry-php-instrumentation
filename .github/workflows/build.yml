@@ -129,17 +129,23 @@ jobs:
     needs: [linux, pecl-package, windows]
     continue-on-error: false
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: mkdir
+        run: mkdir binaries
       - name: download-artifacts
         uses: actions/download-artifact@v3
+        with:
+          path: ext/binaries
       - name: debug
         run: |
           pwd
           find . -name "*.dll"
           find . -name "*.tgz"
       - name: zip
-        run: find * -maxdepth 1 -type d -exec zip -jr {}.zip {} \;
+        run: find ./binaries/* -maxdepth 1 -type d -exec zip -r {}.zip {} \;
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
-          files: "*.zip"
+          files: "**/binaries/*.zip"
