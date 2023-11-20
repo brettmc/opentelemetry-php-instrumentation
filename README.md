@@ -52,8 +52,10 @@ php --ri  opentelemetry
 
 ### Conflicting extensions
 
-The extension can be configured to not run if a conflicting extension is installed. Currently, we
-are not aware of any such extensions.
+The extension can be configured to not run if a conflicting extension is installed. The following extensions
+are known to not work when installed alongside OpenTelemetry:
+
+* SourceGuardian
 
 You can control conflicts via the `opentelemetry.conflicts` ini setting.
 
@@ -62,15 +64,15 @@ If a conflicting extension is found, then the OpenTelemetry extension will disab
 ```shell
 php --ri opentelemetry
 
-Notice: PHP Startup: Conflicting extension found (blackfire), disabling OpenTelemetry in Unknown on line 0
+Notice: PHP Startup: Conflicting extension found (SourceGuardian), disabling OpenTelemetry in Unknown on line 0
 
 opentelemetry
 
 opentelemetry hooks => disabled (conflict)
-extension version => 1.0.0beta6
+extension version => 1.0.0
 
 Directive => Local Value => Master Value
-opentelemetry.conflicts => blackfire => blackfire
+opentelemetry.conflicts => SourceGuardian => SourceGuardian
 opentelemetry.validate_hook_functions => On => On
 ```
 
