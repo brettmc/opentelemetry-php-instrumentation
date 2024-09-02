@@ -139,6 +139,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ./binaries
+      - name: pwd
+        run: pwd
       - name: ls
         run: ls -R ./binaries
       - name: Release
