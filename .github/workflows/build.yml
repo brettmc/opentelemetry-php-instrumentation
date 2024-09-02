@@ -136,9 +136,11 @@ jobs:
       - name: mkdir
         run: mkdir binaries
       - name: download-artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          path: ext/binaries
+          path: binaries
+      - name: ls
+        run: ls -R
       - name: zip
         run: find ./binaries/* -maxdepth 1 -type d -exec zip -jr {}.zip {} \;
       - name: Release
