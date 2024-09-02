@@ -133,14 +133,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: mkdir
-        run: mkdir binaries
+      #- name: mkdir
+      #  run: mkdir binaries
       - name: download-artifacts
         uses: actions/download-artifact@v4
         with:
-          path: binaries
+          path: ./binaries
       - name: ls
-        run: ls -R
+        run: ls -R ./binaries
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
