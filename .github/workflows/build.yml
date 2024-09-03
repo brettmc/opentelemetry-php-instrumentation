@@ -139,10 +139,10 @@ jobs:
           path: ./binaries
       - name: pwd
         run: pwd
+      - name: zip
+        run: find ../**/binaries/* -maxdepth 1 -type f -exec zip -jr {}.zip {} \;
       - name: ls
         run: ls -R ../binaries
-      - name: zip
-        run: find ../binaries/* -maxdepth 1 -type d -exec zip -jr {}.zip {} \;
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
