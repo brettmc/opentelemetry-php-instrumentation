@@ -140,7 +140,9 @@ jobs:
       - name: pwd
         run: pwd
       - name: zip
-        run: find artifacts/ -maxdepth 1 -type d -exec zip -jr {}.zip {} \;
+        run: |
+          cd artifacts
+          find . -maxdepth 1 -type d -exec zip -jr {}.zip {} \;
       - name: ls
         run: ls -R artifacts
       - name: Release
