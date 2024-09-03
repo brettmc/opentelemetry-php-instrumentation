@@ -133,8 +133,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      #- name: mkdir
-      #  run: mkdir binaries
       - name: download-artifacts
         uses: actions/download-artifact@v4
         with:
@@ -142,10 +140,10 @@ jobs:
       - name: pwd
         run: pwd
       - name: ls
-        run: ls -R ./binaries
+        run: ls -R ../binaries
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
           draft: true
-          files: "**/binaries/*"
+          files: "../**/binaries/*"
