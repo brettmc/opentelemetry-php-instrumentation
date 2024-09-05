@@ -53,6 +53,21 @@ $ git clean -Xf
 
 or `make clean` from in the container.
 
+# Testing against nightly PHP
+
+The nightly build of PHP (which will become the next major release), can be used:
+
+```shell
+docker compose buid nightly
+docker compose run nightly bash
+
+phpize
+./configure
+make clean
+make
+make test
+```
+
 # Enabling the extension
 
 ```shell

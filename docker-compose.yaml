@@ -1,4 +1,12 @@
 services:
+  nightly:
+    build:
+      context: docker
+      dockerfile: Dockerfile.nightly
+    volumes:
+      - ./ext:/usr/src/myapp
+    environment:
+      TEST_PHP_ARGS: "-q"
   debian:
     build:
       context: docker
