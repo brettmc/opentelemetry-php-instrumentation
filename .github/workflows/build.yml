@@ -132,8 +132,6 @@ jobs:
           echo "BUILD_NAME=$BUILD_NAME" >> $GITHUB_ENV
 
       - name: Copy binaries
-        env:
-          #BUILD_NAME: "opentelemetry-${{matrix.php}}-windows-x64-${{matrix.ts}}"
         run: |
           md binaries\$BUILD_NAME
           $file = Get-ChildItem -Path x64 -Recurse -Filter php_opentelemetry.dll
