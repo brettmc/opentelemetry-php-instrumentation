@@ -113,18 +113,36 @@ jobs:
         env:
           TEST_PHP_ARGS: "-q"
         run: nmake test TESTS=--show-diff
+      - name: Get Compiler Version + Build Name
+        shell: bash
+        run: |
+          COMPILER_VERSION=$(php -r "echo PHP_COMPILER_MSVC;")
+          if [[ "$COMPILER_VERSION" =~ 192 ]]; then
+            COMPILER="vs16"
+          elif [[ "$COMPILER_VERSION" =~ 193 ]]; then
+            COMPILER="vs17"
+          else
+            echo "Unknown MSVC version: $COMPILER_VERSION"
+            exit 1
+          fi
+          echo "Detected Compiler: $COMPILER"
+          echo "COMPILER_VERSION=$COMPILER" >> $GITHUB_ENV
+          BUILD_NAME="php_opentelemetry-${{github.ref_name}}-${{matrix.php}}-${{matrix.ts}}-${{env.COMPILER_VERSION}}-x64"
+          echo "Build Name: $BUILD_NAME"
+          echo "BUILD_NAME=$BUILD_NAME" >> $GITHUB_ENV
+
       - name: Copy binaries
         env:
-          BUILD_NAME: "opentelemetry-${{matrix.php}}-windows-x64-${{matrix.ts}}"
+          #BUILD_NAME: "opentelemetry-${{matrix.php}}-windows-x64-${{matrix.ts}}"
         run: |
           md binaries\$BUILD_NAME
           $file = Get-ChildItem -Path x64 -Recurse -Filter php_opentelemetry.dll
-          Copy-Item -Path $file.FullName -Destination binaries\$BUILD_NAME
+          Copy-Item -Path $file.FullName -Destination binaries\$BUILD_NAME.dll
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: opentelemetry-${{matrix.php}}-windows-x64-${{matrix.ts}}
-          path: ext\x64\**\php_opentelemetry.dll
+          name: ${{env.BUILD_NAME}}
+          path: ext\x64\**\${{env.BUILD_NAME}}.dll
           if-no-files-found: error
 
   release-if-tag:
