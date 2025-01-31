@@ -135,7 +135,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{env.BUILD_NAME}}
-          path: ext\x64\**\*.dll
+          path: binaries\${{env.BUILD_NAME}}\${{env.BUILD_NAME}}.dll
           if-no-files-found: error
 
   release-if-tag:
