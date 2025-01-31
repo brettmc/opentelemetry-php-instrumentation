@@ -130,8 +130,8 @@ jobs:
         run: |
           md binaries\${{env.BUILD_NAME}}
           $file = Get-ChildItem -Path x64 -Recurse -Filter php_opentelemetry.dll
-          Copy-Item -Path $file.FullName -Destination binaries\${{env.BUILD_NAME}}
-          Rename-Item binaries\${{env.BUILD_NAME}}\php_opentelemetry.dll binaries\${{env.BUILD_NAME}}\${{env.BUILD_NAME}}.dll
+          Copy-Item -Path $file.FullName -Destination "binaries\${{env.BUILD_NAME}}"
+          Rename-Item -Path "binaries\${{env.BUILD_NAME}}\php_opentelemetry.dll" -NewName "${{env.BUILD_NAME}}.dll"
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
