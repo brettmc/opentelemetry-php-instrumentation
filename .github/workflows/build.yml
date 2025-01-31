@@ -122,8 +122,7 @@ jobs:
             *) echo "Unknown MSVC version: $VisualStudioVersion"; exit 1;;
           esac
           echo "Detected Compiler: $COMPILER"
-          echo "COMPILER_VERSION=$COMPILER" >> $GITHUB_ENV
-          BUILD_NAME="php_opentelemetry-${{github.ref_name}}-${{matrix.php}}-${{matrix.ts}}-${{env.COMPILER_VERSION}}-x64"
+          BUILD_NAME="php_opentelemetry-${{github.ref_name}}-${{matrix.php}}-${{matrix.ts}}-${{COMPILER}}-x64"
           echo "Build Name: $BUILD_NAME"
           echo "BUILD_NAME=$BUILD_NAME" >> $GITHUB_ENV
 
@@ -136,7 +135,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{env.BUILD_NAME}}
-          path: ext\x64\**\${{env.BUILD_NAME}}.dll
+          path: ext\x64\${{env.BUILD_NAME}}\*.dll
           if-no-files-found: error
 
   release-if-tag:
