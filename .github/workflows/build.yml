@@ -116,15 +116,11 @@ jobs:
       - name: Get Compiler Version + Build Name
         shell: bash
         run: |
-          COMPILER_VERSION=$(php -r "echo PHP_COMPILER_MSVC;")
-          if [[ "$COMPILER_VERSION" =~ 192 ]]; then
-            COMPILER="vs16"
-          elif [[ "$COMPILER_VERSION" =~ 193 ]]; then
-            COMPILER="vs17"
-          else
-            echo "Unknown MSVC version: $COMPILER_VERSION"
-            exit 1
-          fi
+          case "$VisualStudioVersion" in
+            16.*) COMPILER="vs16";;
+            17.*) COMPILER="vs17";;
+            *) echo "Unknown MSVC version: $VisualStudioVersion"; exit 1;;
+          esac
           echo "Detected Compiler: $COMPILER"
           echo "COMPILER_VERSION=$COMPILER" >> $GITHUB_ENV
           BUILD_NAME="php_opentelemetry-${{github.ref_name}}-${{matrix.php}}-${{matrix.ts}}-${{env.COMPILER_VERSION}}-x64"
