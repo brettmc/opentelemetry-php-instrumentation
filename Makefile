@@ -1,5 +1,7 @@
 PHP_VERSION ?= 8.3.10
 DISTRO ?= debian
+# docker-compose.yaml names each image by PHP_VERSION, so every target needs it.
+export PHP_VERSION
 
 .DEFAULT_GOAL : help
 
@@ -8,7 +10,7 @@ help: ## Show this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9_-]+:.*?## / {printf "  \033[32m%-18s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 all: build-image build test ## Build image, build extension, run tests
 build-image: ## Build docker image
-	PHP_VERSION=$(PHP_VERSION) docker compose build $(DISTRO)
+	docker compose build $(DISTRO)
 shell: ## Shell
 	docker compose run $(DISTRO) bash
 format: ## Run clang-format (debian-only)

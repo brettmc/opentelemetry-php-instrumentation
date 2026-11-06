@@ -18,26 +18,37 @@ RUN apt-get update \
 
 ENV PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c"
 
+# bison: a git export has no pre-generated parser (see --force below).
+# wget:  a git export does not bundle install-pear-nozlib.phar either, so
+#        `make install-pear` downloads it. Its fallback is `php -n fetch.php`,
+#        which fopen()s an https URL and so needs an SSL stream wrapper this
+#        build does not have; the Makefile prefers wget, which does not.
 RUN apt-get update -y \
   && apt-get install -y \
     ${PHPIZE_DEPS} \
+    bison \
     libxml2-dev \
     libsqlite3-dev \
+    wget \
     zlib1g-dev
 
 ARG PHP_VERSION
-ENV PHP_URL="https://www.php.net/distributions/php-${PHP_VERSION}.tar.xz"
+# Source from the php-src git tags rather than php.net/distributions, which
+# only hosts final releases and 404s on every alpha/beta/RC. Matches alpine.
+ENV PHP_URL="https://github.com/php/php-src/archive/refs/tags/php-${PHP_VERSION}.tar.gz"
 ENV CFLAGS="-ggdb3"
 ENV TEST_PHP_ARGS="-q"
 
 RUN echo "$PHP_URL" \
-  && curl -fsSL -o php.tar.xz "$PHP_URL" \
-  && tar -xf php.tar.xz \
-  && rm php.tar.xz
+  && curl -fsSL -o php.tar.gz "$PHP_URL" \
+  && mkdir php-src \
+  && tar -xzf php.tar.gz -C php-src --strip-components=1 \
+  && rm php.tar.gz
 
 ARG PHP_CONFIG_OPTS="--enable-debug --with-pear --with-zlib"
-RUN cd php-${PHP_VERSION} \
-  && ./buildconf \
+# --force: a git export ships no pre-generated parser, unlike a release tarball.
+RUN cd php-src \
+  && ./buildconf --force \
   && if echo "${PHP_VERSION}" | grep -q '^8\.1'; then export CFLAGS="${CFLAGS} -Wno-error=incompatible-pointer-types"; fi \
   && ./configure ${PHP_CONFIG_OPTS} \
   && make -j $(nproc) \

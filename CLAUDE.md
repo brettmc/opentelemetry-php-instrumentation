@@ -54,9 +54,9 @@ Single function: `OpenTelemetry\Instrumentation\hook(?string $class, string $fun
 - PECL packaging: `package.xml`
 
 ### CI Matrix
-- Linux + macOS: PHP 8.1–8.4
-- Windows: PHP 8.1–8.4 (TS and NTS variants)
-- Nightly: PHP 8.5
+- Linux + macOS: PHP 8.1–8.6
+- Windows: PHP 8.1–8.6 (TS and NTS variants), via `php/php-windows-builder`
+- Nightly: PHP master
 
 ## Key INI Settings
 - `opentelemetry.conflicts` — Comma-separated conflicting extensions (e.g., SourceGuardian, Blackfire)
